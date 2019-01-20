@@ -43,5 +43,5 @@ def test_camera_class():
             break
 
 
-test_camera_class()
+# test_camera_class()
 

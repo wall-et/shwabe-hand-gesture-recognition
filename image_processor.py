@@ -15,9 +15,9 @@ class ImageProcessor(object):
         self.upper_blue = np.array([130, 255, 255])
 
 
-    def extract_morph_from_img(self):
+    def extract_morph_from_img(self,img):
 
-        self.img = cv2.flip(self.img, 1)
+        self.img = cv2.flip(img, 1)
         self.hsv = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
         self.kernel = np.ones((10, 10), np.uint8)  ###########
         self.mask = cv2.inRange(self.hsv, self.lower_blue, self.upper_blue)
@@ -46,7 +46,9 @@ class ImageProcessor(object):
                 cv2.circle(self.img, (int(x), int(y)), int(radius), (0, 255, 255), 2)
                 cv2.circle(self.img, center, 5, (0, 0, 255), -1)
 
-        self.pts.appendleft(center)
+            self.pts.appendleft(center)
+            return center
+        return None
 
     def draw_line(self):
 
