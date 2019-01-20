@@ -9,6 +9,7 @@ verify_ssl = true
 cv2 = "*"
 numpy = "*"
 pynput = "*"
+screeninfo = "*"
 
 [requires]
 python_version = "3.7"
