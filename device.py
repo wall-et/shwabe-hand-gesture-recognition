@@ -11,6 +11,7 @@ class Camera(object):
         try:
             resp = self.cam.read()
             self.shape = resp[1].shape
+            print("===========",self.shape)
             self.valid = True
         except:
             self.shape = None

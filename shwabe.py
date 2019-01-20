@@ -14,6 +14,7 @@ class Shwabe(object):
     def main_loop(self):
         while True:
             input_frame = self.camera.get_frame()
+            print("===========", input_frame.shape)
             self.processor.extract_morph_from_img(input_frame)
             center = self.processor.draw_circle()
             # if center:
