@@ -11,12 +11,12 @@
 
 ![SCREESHOT DECSRIPTION](screenshots/excellenteam-logo.jpeg)
 
-## How to Run This Bot
+## How to Run This Project
 
 ### Prerequisites
 * {EDIT AND ADD MORE DEPENDENCIES HERE}
-* Python 3.7 ???
-* pipenv ???
+* Python 3.7
+* pipenv
 
 ### Setup
 * {EDIT THIS}
