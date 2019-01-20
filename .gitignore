@@ -1,0 +1,10 @@
+.idea
+db.sqlite3
+*.pyc
+venv
+
+# To keep Udi and all the participants sane during the Hackathon
+Pipfile.lock  # This file should actually BE in the repository
+
+secret_settings.py
+local_settings.py
