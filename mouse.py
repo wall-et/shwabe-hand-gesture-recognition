@@ -24,6 +24,5 @@ class Mouse(object):
     def left_click(self):
         pass
 
-
 # m = Mouse((100, 100))
 # m.move((5, 5))

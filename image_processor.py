@@ -3,6 +3,8 @@
 import numpy as np
 import cv2
 from collections import deque
+
+
 # import argparse
 
 class ImageProcessor(object):
@@ -14,8 +16,7 @@ class ImageProcessor(object):
         self.lower_blue = np.array([110, 50, 50])
         self.upper_blue = np.array([130, 255, 255])
 
-
-    def extract_morph_from_img(self,img):
+    def extract_morph_from_img(self, img):
 
         self.img = cv2.flip(img, 1)
         self.hsv = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
@@ -70,8 +71,7 @@ class ImageProcessor(object):
 
         k = cv2.waitKey(30) & 0xFF
         if k == 32:
-           return
-
+            return
 
 
 image = ImageProcessor()
