@@ -62,16 +62,11 @@ class ImageProcessor(object):
             cv2.line(self.img, self.pts[i - 1], self.pts[i], (0, 0, 225), thick)
 
     def draw_windows(self):
-
-        # cv2.resizeWindow('Frame', self.img.shape[1], self.img.shape[0])
-        cv2.namedWindow('Frame', cv2.WINDOW_NORMAL)
         cv2.imshow("Frame", self.img)
-        # cv2.imshow("mask", self.mask)
-        # cv2.imshow("res", self.res)
+        cv2.imshow("mask", self.mask)
+        cv2.imshow("res", self.res)
 
-        k = cv2.waitKey(30) & 0xFF
-        if k == 32:
-            return
+
 
 
 image = ImageProcessor()
