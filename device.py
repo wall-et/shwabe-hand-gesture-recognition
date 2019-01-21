@@ -28,7 +28,7 @@ class Camera(object):
             cv2.putText(frame, "(Error: Camera not accessible)",
                         (65, 220), cv2.FONT_HERSHEY_PLAIN, 2, col)
 
-        frame = self.trim_black_edges(frame)
+        # frame = self.trim_black_edges(frame)
         return frame
 
     def trim_black_edges(self, frame):
@@ -68,7 +68,8 @@ def test_camera_class():
             x, y, w, h = cv2.boundingRect(cnt)
 
             crop = frame[y:y + h, x:x + w]
-            cv2.imwrite('tmp.png', crop)
+            cv2.imshow("crop", crop)
+            # cv2.imwrite('tmp.png', crop)
 
         cv2.imshow("Original", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
