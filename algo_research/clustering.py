@@ -63,51 +63,69 @@ while True:
     # hull = []
     max_dist = 10
     filter_value = 50
-    points = []
+    points_tips = []
+    points_ins = []
 
     if len(contours) > 0:
         max_contour = max(contours, key=cv2.contourArea)
 
         # const hullIndices = contour.convexHullIndices();
         hullIndices = []
-        hullIndices.append(cv2.convexHull(max_contour, returnPoints=False))
-        # print(len(hullIndices))
+        hullIndices = cv2.convexHull(max_contour, returnPoints=False)
+        cv2.drawContours(contours_mask, [max_contour], -1, (0, 255, 255), 2)
+        cv2.drawContours(contours_mask, hullIndices, color_hull, 1, 8)
+        print(len(hullIndices))
 
         # drawing hullindices
-        # for index in range(len(hullIndices)):
-        #     cv2.circle(contours_mask, (hullIndices[index][0][0], hullIndices[index][0][1]), 3, (0, 0, 255), -1)
+        # for index in range(len(hullIndices[0])):
+        #     cv2.circle(contours_mask, (hullIndices[0][index][0][0], hullIndices[0][index][0][1]), 3, (0, 0, 255), -1)
+        # for index in range(len(hullIndices[0])):
+        #     cv2.circle(contours_mask, (hullIndices[0][index][0][0], hullIndices[0][index][0][1]), 3, (0, 0, 255), -1)
 
         # const contourPoints = contour.getPoints();
-        contourPoints = cv2.convexHull(max_contour, True)
+        # contourPoints = cv2.convexHull(max_contour, True)
         # print(len(contourPoints))
         # drawing contourPoints
 
         # for index in range(len(contourPoints)):
         #     cv2.circle(contours_mask, (contourPoints[index][0][0], contourPoints[index][0][1]), 3, (255, 0, 0), -1)
-        print(len(hullIndices[0]))
-        cv2.drawContours(contours_mask, [max_contour], -1, (0, 255, 255), 2)
-        # cv2.drawContours(contours_mask, hullIndices, 0, color_hull, 1, 8)
+        # print(len(hullIndices[0]))
+        # cv2.drawContours(contours_mask, [max_contour], -1, (0, 255, 255), 2)
+
+        # for index in range(len(hullIndices[0])):
+        #     print("====",hullIndices)
+            # cv2.circle(contours_mask, (hullIndices[0][index][0], hullIndices[0][index][1]), 3, (0, 0, 255), -1)
+
+    # cv2.drawContours(contours_mask, hullIndices, 0, color_hull, 1, 8)
         # for index in range(len(hullIndices[0])):
         #     cv2.circle(contours_mask, (hullIndices[0][index][0][0], hullIndices[0][index][0][1]), 3, (0, 0, 255), -1)
 
-        if len(hullIndices[0]) > 3:
-            # print(type(hullIndices[0][0][0]))
-            # print(hullIndices[0][0][0])
-            print(hullIndices[0].shape)
-            defects = cv2.convexityDefects(max_contour, hullIndices[0])
-            print(type(defects))
-            if type(defects) is np.ndarray:
-                # if type(defects) == "<class 'numpy.ndarray'>":
-                print("==============================================")
-                for i in range(defects.shape[0]):
-                    s, e, f, d = defects[i, 0]
-                    end = tuple(max_contour[e][0])
-                    points.append(end)
-                filtered = filter_points(points, filter_value)
-                print("points found",filtered)
-                for index in range(len(filtered)):
-                    cv2.circle(contours_mask, (filtered[index][0], filtered[index][1]), 3, (255, 0, 0), -1)
-            #
+        # if len(hullIndices[0]) > 3:
+        #     # print(type(hullIndices[0][0][0]))
+        #     # print(hullIndices[0][0][0])
+        #     # print(hullIndices[0].shape)
+        #     defects = cv2.convexityDefects(max_contour, hullIndices[0])
+        #     # print(type(defects))
+        #     if type(defects) is np.ndarray:
+        #         # if type(defects) == "<class 'numpy.ndarray'>":
+        #         # print("==============================================")
+        #         for i in range(defects.shape[0]):
+        #             s, e, f, d = defects[i, 0]
+        #             end = tuple(max_contour[e][0])
+        #             start = tuple(max_contour[s][0])
+        #             far = tuple(max_contour[f][0])
+        #             points_tips.append(end)
+        #             # points_tips.append(start)
+        #             # points_ins.append(far)
+        #         filtered = filter_points(points_tips, filter_value)
+        #         filtere_far = filter_points(points_ins, filter_value)
+        #         # print("points found",filtered)
+        #         for index in range(len(filtered)):
+        #             cv2.circle(contours_mask, (filtered[index][0], filtered[index][1]), 3, (255, 0, 0), -1)
+        #
+        #         for index in range(len(filtere_far)):
+        #             cv2.circle(contours_mask, (filtere_far[index][0], filtere_far[index][1]), 3, (0, 0, 255), -1)
+
 
         # for i,cnt in enumerate(contours):
         # for index in range(len(contours)):
