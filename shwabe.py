@@ -17,11 +17,10 @@ class Shwabe(object):
             print("===========", input_frame.shape)
             self.processor.extract_morph_from_img(input_frame)
             center = self.processor.draw_circle()
-            # if center:
-                # self.mouse.move(center)
+            if center:
+                self.mouse.move(center)
             self.processor.draw_line()
             self.processor.draw_windows()
-
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
