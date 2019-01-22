@@ -7,9 +7,11 @@ import numpy as np
 
 class MainBrain:
 
-    def __init__(self):
+    def __init__(self,m):
         self.mask = None
         self.calculated_mask = None
+        self.defects = None
+        self.mouse = m
 
 
     def find_contours(self, mask):
@@ -37,6 +39,7 @@ class MainBrain:
 
         if type(self.defects) is np.ndarray:
             fingers = 0
+            far = (0,0)
 
             # Get defect points and draw them in the original image
             if self.defects is not None:
@@ -62,6 +65,12 @@ class MainBrain:
 
 
                 print(fingers)
+                if fingers == 0:
+                    self.mouse.release_all()
+                if fingers == 1:
+                    self.mouse.move(far)
+                if fingers == 4:
+                    self.mouse.left_click()
                 print("**********>>>***************")
 
     def show_windows(self):

@@ -11,7 +11,7 @@ class Shwabe(object):
         self.camera = Camera()
         self.processor = ImageProcessor()
         self.mouse = Mouse(self.camera.shape[:2])
-        self.brain = MainBrain()
+        self.brain = MainBrain(self.mouse)
         # self.mouse = Mouse(self.camera.get_camera_view()[:2])
 
     def main_loop(self):
@@ -28,7 +28,8 @@ class Shwabe(object):
             masked_image = self.processor.extract_mask(input_frame)
 
             self.brain.find_contours(masked_image)
-            self.brain.show_windows()
+            self.brain.find_defecets_point()
+            # self.brain.show_windows()
 
 
             # if cv2.waitKey(1) & 0xFF == ord('q'):
