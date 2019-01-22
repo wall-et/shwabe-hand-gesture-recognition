@@ -20,9 +20,9 @@ class Mouse(object):
         if self.image_size != [image_size[0] - 50, image_size[1] - 50]:
             self.image_size = [image_size[0] - 50, image_size[1] - 50]
 
-    def move(self, mouse_location):
-        x = mouse_location[0] * self.x_relation
-        y = mouse_location[1] * self.y_relation
+    def move(self, move_delta):
+        x = self.mouse.position[0] + move_delta[0] * self.x_relation
+        y = self.mouse.position[1] + move_delta[1] * self.y_relation
         self.mouse.position = (x, y)
 
     def right_click(self):
@@ -37,18 +37,18 @@ class Mouse(object):
         self.is_left_pressed = False
         self.mouse.release(Button.left)
 
-    def search_trigger(self, move_stats, move_cap, center):
-        if center is None:
-            center = self.mouse.position
+    def search_trigger(self, move_stats, move_cap, move_delta):
+        if move_delta is None:
+            move_delta = self.mouse.position
 
-        if move_stats[0] == move_cap:
+        if move_stats[0] >= move_cap:
             self.release_all()
-        if move_stats[3] == move_cap:
-            self.release_all()
-        if move_stats[1] == move_cap:
-            self.move(center)
+        if move_stats[1] >= move_cap:
+            self.move(move_delta)
             # self.move_mouse(center[0], center[1])
-        if move_stats[4] == move_cap:
+        if move_stats[3] >= move_cap:
+            self.release_all()
+        if move_stats[4] >= move_cap:
             self.left_click()
 
     def move_mouse(self, x, y):

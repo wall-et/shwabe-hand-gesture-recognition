@@ -30,14 +30,12 @@ class Shwabe(object):
             masked_image = self.processor.extract_mask(input_frame)
 
             self.brain.find_contours(masked_image)
-            self.brain.find_defecets_point()
+            self.brain.find_defects_point()
 
             # self.brain.move_stats
-            self.mouse.search_trigger(self.brain.move_stats, self.brain.move_cap, self.brain.get_center())
-            # self.brain.show_windows()
+            self.mouse.search_trigger(self.brain.move_stats, self.brain.move_cap, self.brain.movement_delta)
+            self.brain.show_windows()
 
-            # if cv2.waitKey(1) & 0xFF == ord('q'):
-            #     break
 
 
 shwabe = Shwabe()
