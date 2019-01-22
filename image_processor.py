@@ -18,25 +18,25 @@ class ImageProcessor(object):
 
     def extract_mask(self, img):
 
-        img = cv2.flip(img, 1)
+        self.img = cv2.flip(img, 1)
         # cv2.imshow("img", img)
-        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        hsv = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
 
         rangeMask = cv2.inRange(hsv, self.lower_blue, self.upper_blue)
         # cv2.imshow("rangeMask", rangeMask)
 
-        mask = cv2.blur(rangeMask, (10, 10))
+        self.mask = cv2.blur(rangeMask, (10, 10))
         # cv2.imshow("blr", mask)
-        ret, mask = cv2.threshold(mask, 150, 255, cv2.THRESH_BINARY)
+        ret, self.mask = cv2.threshold(self.mask, 150, 255, cv2.THRESH_BINARY)
         # cv2.imshow("blr", mask)
 
         kernel = np.ones((5, 5), np.uint8)
-        mask = cv2.dilate(mask, kernel, iterations=1)
+        mask = cv2.dilate(self.mask, kernel, iterations=1)
         # cv2.imshow("dilate", mask)
 
-        masked_image = cv2.bitwise_and(img, img, mask=mask)
+        self.masked_image = cv2.bitwise_and(self.img, self.img, mask=self.mask)
 
-        return mask.copy()
+        return self.mask.copy()
 
     def extract_morph_from_img(self, img):
 
@@ -86,9 +86,9 @@ class ImageProcessor(object):
     def draw_windows(self):
         cv2.imshow("Frame", self.img)
         cv2.imshow("mask", self.mask)
-        cv2.imshow("res", self.res)
+        cv2.imshow("res", self.masked_image)
 
 
 
 
-image = ImageProcessor()
+# image = ImageProcessor()

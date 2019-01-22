@@ -1,4 +1,3 @@
-
 # get image data and create move from it
 import math
 import cv2
@@ -7,12 +6,14 @@ import numpy as np
 
 class MainBrain:
 
-    def __init__(self,m):
+    def __init__(self):
         self.mask = None
         self.calculated_mask = None
         self.defects = None
-        self.mouse = m
-
+        self.hand_contour = None
+        # self.mouse = m
+        self.move_cap = 5
+        self.move_stats = [self.move_cap, 0, 0, 0, 0]
 
     def find_contours(self, mask):
 
@@ -39,7 +40,6 @@ class MainBrain:
 
         if type(self.defects) is np.ndarray:
             fingers = 0
-            far = (0,0)
 
             # Get defect points and draw them in the original image
             if self.defects is not None:
@@ -63,16 +63,23 @@ class MainBrain:
 
                         cv2.circle(self.calculated_mask, far, 5, [0, 0, 255], -1)
 
+                if fingers < len(self.move_stats):
+                    if (self.move_stats[fingers] == 0 or self.move_stats[fingers] == self.move_cap):
+                        self.move_stats = [0, 0, 0, 0, 0]
+                        self.move_stats[fingers] = 1
 
-                print(fingers)
-                if fingers == 0:
-                    self.mouse.release_all()
-                if fingers == 1:
-                    self.mouse.move(far)
-                if fingers == 4:
-                    self.mouse.left_click()
-                print("**********>>>***************")
+                    else:
+                        # if self.move_stats[fingers] != self.move_cap:
+                        self.move_stats[fingers] += 1
+
+
+    def get_center(self):
+        if self.hand_contour is None:
+            return None
+        ((x, y), radius) = cv2.minEnclosingCircle(self.hand_contour)
+        M = cv2.moments(self.hand_contour)
+        center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+        return center
 
     def show_windows(self):
-
         cv2.imshow("calculated_mask", self.calculated_mask)
