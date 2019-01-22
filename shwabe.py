@@ -10,11 +10,12 @@ class Shwabe(object):
         self.camera = Camera()
         self.processor = ImageProcessor()
         self.mouse = Mouse(self.camera.shape[:2])
+        # self.mouse = Mouse(self.camera.get_camera_view()[:2])
 
     def main_loop(self):
         while True:
             input_frame = self.camera.get_frame()
-            print("===========", input_frame.shape)
+            # print("===========", input_frame.shape)
             self.processor.extract_morph_from_img(input_frame)
             center = self.processor.draw_circle()
             if center:
