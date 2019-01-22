@@ -16,6 +16,28 @@ class ImageProcessor(object):
         self.lower_blue = np.array([110, 50, 50])
         self.upper_blue = np.array([130, 255, 255])
 
+    def extract_mask(self, img):
+
+        img = cv2.flip(img, 1)
+        # cv2.imshow("img", img)
+        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+        rangeMask = cv2.inRange(hsv, self.lower_blue, self.upper_blue)
+        # cv2.imshow("rangeMask", rangeMask)
+
+        mask = cv2.blur(rangeMask, (10, 10))
+        # cv2.imshow("blr", mask)
+        ret, mask = cv2.threshold(mask, 150, 255, cv2.THRESH_BINARY)
+        # cv2.imshow("blr", mask)
+
+        kernel = np.ones((5, 5), np.uint8)
+        mask = cv2.dilate(mask, kernel, iterations=1)
+        # cv2.imshow("dilate", mask)
+
+        masked_image = cv2.bitwise_and(img, img, mask=mask)
+
+        return mask.copy()
+
     def extract_morph_from_img(self, img):
 
         self.img = cv2.flip(img, 1)
