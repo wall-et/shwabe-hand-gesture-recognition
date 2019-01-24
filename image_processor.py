@@ -15,8 +15,13 @@ class ImageProcessor(object):
 
         self.pts = deque(maxlen=64)
 
+        # self.lower_blue = np.array([110, 50, 50])
+        # self.upper_blue = np.array([130, 255, 255])
         self.lower_blue = np.array([0, 45, 80])
         self.upper_blue = np.array([20, 198, 255])
+
+    # self.lower_blue = np.array([0, 30, 60])
+        # self.upper_blue = np.array([20, 150, 255])
 
     def resource_path(self,relative_path):
         """ Get absolute path to resource, works for dev and for PyInstaller """
