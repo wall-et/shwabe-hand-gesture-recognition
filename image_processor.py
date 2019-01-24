@@ -3,6 +3,8 @@
 import numpy as np
 import cv2
 from collections import deque
+import os
+import sys
 
 
 # import argparse
@@ -13,8 +15,46 @@ class ImageProcessor(object):
 
         self.pts = deque(maxlen=64)
 
-        self.lower_blue = np.array([110, 50, 50])
-        self.upper_blue = np.array([130, 255, 255])
+        self.lower_blue = np.array([0, 45, 80])
+        self.upper_blue = np.array([20, 198, 255])
+
+    def resource_path(self,relative_path):
+        """ Get absolute path to resource, works for dev and for PyInstaller """
+        try:
+            # PyInstaller creates a temp folder and stores path in _MEIPASS
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
+
+    def remove_face(self, img):
+        path = "haarcascade_frontalface_alt.xml"
+        dpath = self.resource_path(path)
+        if not os.path.exists(dpath):
+            print("Cascade file not present!")
+        face_cascade = cv2.CascadeClassifier(dpath)
+        col = (0, 0, 0)
+        gray = cv2.equalizeHist(cv2.cvtColor(img,
+                                                  cv2.COLOR_BGR2GRAY))
+
+        detected = list(face_cascade.detectMultiScale(gray,
+                                                           scaleFactor=1.3,
+                                                           minNeighbors=4,
+                                                           minSize=(
+                                                               50, 50),
+                                                           flags=cv2.CASCADE_SCALE_IMAGE))
+        if len(detected) > 0:
+            face_rect = detected[-1]
+
+            x, y, w, h = face_rect
+            x = int(x*0.95)
+            y = int(y*0.85)
+            w = int(w*1.2)
+            h = int(h*1.5)
+            cv2.rectangle(img, (x, y), (x + w, y + h), col, -1)
+
+        cv2.imshow("img-----", img)
 
         self.img = None
         self.mask = None
@@ -22,6 +62,7 @@ class ImageProcessor(object):
 
     def extract_mask(self, img):
 
+        self.remove_face(img)
         self.img = cv2.flip(img, 1)
         # cv2.imshow("img", img)
         hsv = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
