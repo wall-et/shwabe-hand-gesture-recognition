@@ -46,8 +46,8 @@ class Mouse(object):
         if move_stats[1] >= move_cap:
             self.move(move_delta)
             # self.move_mouse(center[0], center[1])
-        if move_stats[3] >= move_cap:
-            self.release_all()
+        # if move_stats[3] >= move_cap:
+        #     self.release_all()
         if move_stats[4] >= move_cap:
             self.left_click()
 

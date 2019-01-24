@@ -17,8 +17,8 @@ class MainBrain:
         self.last_center = None
         self.mouse_move_index = 1
         self.movement_delta = [0, 0]
-        self.movement_thresh_x = 15
-        self.movement_thresh_y = 5
+        self.movement_thresh_x = 5
+        self.movement_thresh_y = 3
 
     def find_contours(self, mask):
 
@@ -36,7 +36,7 @@ class MainBrain:
             # contourPoints = cv2.convexHull(self.hand_contour, True)
 
             # for debugging
-            cv2.drawContours(self.calculated_mask, [self.hand_contour], -1, (0, 255, 255), 2)
+            cv2.drawContours(self.calculated_mask, [self.hand_contour], -1, (0, 255, 255), 1)
 
             if len(hullIndices[0]) > 3:
                 self.defects = cv2.convexityDefects(self.hand_contour, hullIndices[0])
@@ -109,6 +109,37 @@ class MainBrain:
 
         if self.move_stats[2] == 1 or update_flag:
             self.last_center = current_center
+
+    def draw_circle(self):
+
+        if self.hand_contour is not None:
+
+            # c = max(self.cnts, key=cv2.contourArea)
+            c = self.hand_contour
+            # find the circumcircle of an object
+            ((x, y), radius) = cv2.minEnclosingCircle(c)
+            # Calculates all of the moments up to the third order of a polygon or rasterized shape.
+            M = cv2.moments(c)
+            # Image moments help you to calculate some features like center of mass of the object, area of the object etc
+            center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+
+            if radius > 3:
+                cv2.circle(self.calculated_mask, (int(x), int(y)), int(radius), (0, 100, 255), 2)
+                cv2.circle(self.calculated_mask, center, 5, (50, 255, 70), -1)
+
+            # self.pts.appendleft(center)
+            return center
+        return None
+
+    def draw_line(self):
+
+        for i in range(1, len(self.pts)):
+            # for i in xrange(1, len(pts)):
+            if self.pts[i - 1] is None or self.pts[i] is None:
+                continue
+
+            thick = int(np.sqrt(len(self.pts) / float(i + 1)) * 2.5)
+            cv2.line(self.img, self.pts[i - 1], self.pts[i], (0, 0, 225), thick)
 
     def show_windows(self):
 

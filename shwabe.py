@@ -32,6 +32,9 @@ class Shwabe(object):
             self.brain.find_contours(masked_image)
             self.brain.find_defects_point()
 
+            self.brain.draw_circle()
+            # self.brain.draw_line()
+
             # self.brain.move_stats
             self.mouse.search_trigger(self.brain.move_stats, self.brain.move_cap, self.brain.movement_delta)
             self.brain.show_windows()
