@@ -45,21 +45,24 @@ class ImageProcessor(object):
                                                                50, 50),
                                                            flags=cv2.CASCADE_SCALE_IMAGE))
         if len(detected) > 0:
-            face_rect = detected[-1]
 
-            x, y, w, h = face_rect
-            x = int(x*0.95)
-            y = int(y*0.85)
-            w = int(w*1.2)
-            h = int(h*1.5)
-            cv2.rectangle(img, (x, y), (x + w, y + h), col, -1)
+            for face in detected:
+                face_rect = face
+
+                x, y, w, h = face_rect
+                x = int(x*0.95)
+                y = int(y*0.85)
+                w = int(w*1.2)
+                h = int(h*1.5)
+                cv2.rectangle(img, (x, y), (x + w, y + h), col, -1)
 
         cv2.imshow("img-----", img)
+        return img
 
     def extract_mask(self, img):
 
-        self.remove_face(img)
-        self.img = cv2.flip(img, 1)
+        self.img = self.remove_face(img)
+        # self.img = cv2.flip(img, 1)
         # cv2.imshow("img", img)
         hsv = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
 
@@ -72,7 +75,7 @@ class ImageProcessor(object):
         # cv2.imshow("blr", mask)
 
         kernel = np.ones((5, 5), np.uint8)
-        mask = cv2.dilate(self.mask, kernel, iterations=1)
+        self.mask = cv2.dilate(self.mask, kernel, iterations=2)
         # cv2.imshow("dilate", mask)
 
         self.masked_image = cv2.bitwise_and(self.img, self.img, mask=self.mask)

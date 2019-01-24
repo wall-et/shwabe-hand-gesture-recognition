@@ -29,6 +29,7 @@ class Camera:
                         (65, 220), cv2.FONT_HERSHEY_PLAIN, 2, col)
 
         # frame = self.trim_black_edges(frame)
+        frame = cv2.flip(frame, 1)
         return frame
 
     def trim_black_edges(self, frame):
@@ -58,7 +59,7 @@ def test_camera_class():
     camera = Camera()
     while True:
         frame = camera.get_frame()
-
+        # frame = cv2.flip(frame, 1)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         _, thresh = cv2.threshold(gray, 1, 255, cv2.THRESH_BINARY)
 
